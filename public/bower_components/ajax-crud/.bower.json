@@ -1,0 +1,30 @@
+{
+  "name": "AjaxCrudJS",
+  "homepage": "https://github.com/DavidVranish/AjaxCrud",
+  "authors": [
+    "Breese <breese@scsgrandrapids.com>"
+  ],
+  "description": "Allow for inline editing through",
+  "main": "dist/js/AjaxCrud.min.js",
+  "dependencies": {
+    "datatables": "~1.10.*",
+    "jquery-niftymodals": "git@github.com:adamcolejenkins/jquery-niftymodals.git"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "22a02264a6",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "22a02264a696276c285dd2582b82f2bda91fc7d0"
+  },
+  "_source": "git@github.com:DavidVranish/AjaxCrud.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:DavidVranish/AjaxCrud.git"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "sparkline",
+  "homepage": "https://github.com/tsmith14/jquery.sparkline",
+  "version": "2.1.3",
+  "_release": "2.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.1.3",
+    "commit": "f30d4f336239ab995b2094814bb052134b48ff82"
+  },
+  "_source": "git@github.com:tsmith14/jquery.sparkline.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:tsmith14/jquery.sparkline.git"
+}

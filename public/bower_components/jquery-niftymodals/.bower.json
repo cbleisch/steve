@@ -1,0 +1,31 @@
+{
+  "name": "jquery-niftymodals",
+  "authors": [
+    "Codrops <www.codrops.com>"
+  ],
+  "description": "A bower package for Codrop's Nifty Modal window effects.",
+  "main": "css/component.css",
+  "keywords": [
+    "modals",
+    "modal",
+    "jquery"
+  ],
+  "license": "MIT",
+  "homepage": "http://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "36b6a75a3f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "36b6a75a3f9112ec493baeab0cfaa4976c063c6a"
+  },
+  "_source": "git@github.com:adamcolejenkins/jquery-niftymodals.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:adamcolejenkins/jquery-niftymodals.git"
+}

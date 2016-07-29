@@ -1,0 +1,118 @@
+table tr td input.form-control {
+	width: 100% !important;
+}
+
+table select, table .select2-container {
+	width: 100%;
+}
+
+.select2-container .select2-choice > .select2-chosen {
+	font-size: 12px;
+}
+
+.select2-container-active .select2-choice {
+border: 1px solid #2598f9;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 32px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 32px;
+}
+
+.x-editable {
+	border-bottom: dashed 1px #0088cc;
+}
+
+select.select2, select.js-select2 {
+	display: inline-block !important;
+	width: 0px !important;
+	border: none !important;
+}
+.md-overlay {
+  	background: rgba(0,0,0,0.8);
+}
+.md-content button {
+	float: right;
+}
+
+div.dataTables_filter label {
+	float: left;
+	margin-left: 2em;
+}
+div.blockOverlay {
+	z-index: 10000 !important;
+}
+
+
+.voffset  { margin-top: 2px; }
+.voffset1 { margin-top: 5px; }
+.voffset2 { margin-top: 10px; }
+.voffset3 { margin-top: 15px; }
+.voffset4 { margin-top: 30px; }
+.voffset5 { margin-top: 40px; }
+.voffset6 { margin-top: 60px; }
+.voffset7 { margin-top: 80px; }
+.voffset8 { margin-top: 100px; }
+.voffset9 { margin-top: 150px; }
+
+.vnegoffset { margin-top: -2px; }
+.vnegoffset1 { margin-top: -5px; }
+.vnegoffset2 { margin-top: -10px; }
+.vnegoffset3 { margin-top: -15px; }
+.vnegoffset4 { margin-top: -30px; }
+.vnegoffset5 { margin-top: -40px; }
+.vnegoffset6 { margin-top: -60px; }
+.vnegoffset7 { margin-top: -80px; }
+.vnegoffset8 { margin-top: -100px; }
+.vnegoffset9 { margin-top: -150px; }
+
+div#pcont td,
+div#pcont th, 
+div#pcont h1, 
+div#pcont h2, 
+div#pcont h3, 
+div#pcont h4, 
+div#pcont h5, 
+div#pcont h6, 
+div#pcont p, 
+div#pcont div, 
+div#pcont span,
+div#pcont li,
+div#pcont label,
+div.md-modal td,
+div.md-modal th, 
+div.md-modal h1, 
+div.md-modal h2, 
+div.md-modal h3, 
+div.md-modal h4, 
+div.md-modal h5, 
+div.md-modal h6, 
+div.md-modal p, 
+div.md-modal div, 
+div.md-modal span,
+div.md-modal li,
+div.md-modal label {
+	color: #000;
+}
+div#pcont div.tooltip *, 
+div.md-modal div.tooltip * {
+	color: #FFF;
+}
+div.md-modal span.header-text {
+	color: #FFF;
+}
+div.md-modal .input-group-addon *,
+div#pcont .input-group-addon * {
+	color: #FFF
+}
+
+.form-control {
+	color: #000;
+}
+
+.va-middle {
+	vertical-align: middle !important;
+}
