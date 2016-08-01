@@ -11,8 +11,7 @@ class InternetProduct extends Model {
 	protected $dates = ['deleted_at'];
 	protected $fillable = ['name', 'spp', 'dpp', 'tpp'];
 
-    public function locations()
-    {
-    	// return $this->hasMany('\App\Models\CustomerLocation');
+    public function packages() {
+        return $this->belongsToMany('App\Models\ProductPackage')->withPivot('price');
     }
 }

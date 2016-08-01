@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 
-use App\Models\TVProduct;
+use App\Models\TvProduct;
+use App\Models\ProductPackage;
 
-class TVProductController extends Controller {
+class TvProductController extends Controller {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -35,31 +36,38 @@ class TVProductController extends Controller {
 	public function index()
 	{
 		return view('tv.index')
-				->with('products', TVProduct::all());
+				->with('products', TvProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function create($id = '')
 	{
 		if(!empty($id)) {
-			$product = TVProduct::find($id);
+			$product = TvProduct::find($id);
 		} else {
-			$product = new TVProduct;
+			$product = new TvProduct;
 		}
 		return view('tv.create')
-				->with('product', $product);
+				->with('product', $product)
+				->with('packages', ProductPackage::all());
 	}
 
 	public function store(Request $request, $id = '')
 	{
-		// echo $id;
+		$prices = $request->input('packagePrice');
 		if(empty($id)) {
-			$product = new TVProduct;
+			$product = new TvProduct;
 		} else {
-			$product = TVProduct::find($id);
+			$product = TvProduct::find($id);
 		}
 
 		$product->fill($request->input());
 		if($product->save()) {
+			$product->packages()->sync([]);
+            foreach ($request->input('packages') as $packageID) {
+                $pPackage = ProductPackage::find($packageID);
+                $product->packages()->save($pPackage, ['price' => $prices[$packageID]]);
+		 	} 
 			flash()->success($product->name . ' was saved.');
 		} else {
 			flash()->danger($product->name . ' could not be saved.');
@@ -67,15 +75,17 @@ class TVProductController extends Controller {
 
 		return redirect()
 				->route('tv.index.get')
-				->with('products', TVProduct::all());
+				->with('products', TvProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function destroy($id)
 	{
-		TVProduct::destroy($id);
+		TvProduct::destroy($id);
 		return redirect()
 				->route('tv.index.get')
-				->with('products', TVProduct::all());	
+				->with('products', TvProduct::all())
+				->with('packages', ProductPackage::all());	
 	}
 
 }

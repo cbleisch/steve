@@ -18,6 +18,14 @@
     #item-form .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 34px;
     }
+    .s2-event-log, .s2-event-log  li {
+    background: #002451;
+    color: #fff !important;
+    font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
+    margin: 0 -15px 15px;
+    padding: 45px 15px 15px;
+    position: relative;
+}
 </style>
 @stop
 
@@ -28,7 +36,7 @@
 
 @section('page-header')
 <h3>
-    {{ $product->id ? 'Modify' : 'Create'  }} Internet Product
+    {{ $product->id ? 'Modify' : 'Create'  }} Internet Product: {{ $product->name }}
 </h3>
 @stop
 
@@ -48,19 +56,26 @@
                         <input type="text" class="form-control" id="name" name="name" placeholder="Product Name" value="{{ $product->name or '' }}" required autofocus>
                     </div>
                     <div class="form-group">
-                        <label for="spp">Single Play Price</label>
-                        <input type="number" class="form-control" id="spp" name="spp" placeholder="0.00" value="{{ $product->spp or '' }}" required step=".01">
+                        <label for="tpp">Product Packages</label><br />
+                        <select class="select2" multiple style="width: 100%" name="packages[]" id="packages">
+                            @foreach($packages as $package)
+                                <option value="{{ $package->id }}"
+                                    @foreach($product->packages as $aPackage)
+                                        {{ $aPackage->id == $package->id  ? 'selected' : ''}}
+                                    @endforeach
+                                >{{ $package->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-
-                    <div class="form-group">
-                        <label for="dpp">Double Play Price</label>
-                        <input type="number" class="form-control" id="dpp" name="dpp" placeholder="0.00" value="{{ $product->dpp or '' }}" required step=".01">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tpp">Tripple Play Price</label>
-                        <input type="number" class="form-control" id="tpp" name="tpp" placeholder="0.00" value="{{ $product->tpp or '' }}" required step=".01">
-                    </div>
+                    @foreach($packages as $package)
+                       <div class="form-group {{ strtolower(str_replace(' ', '-', 'package-'.$package->id)) }} package-price" data-id="{{$package->id}}" style="display: none">
+                        <label for="">{{ $package->name }} Price</label>
+                        <input type="number" class="form-control" id="packagePrice[{{ $package->id }}]" name="packagePrice[{{ $package->id }}]" placeholder="0.00"
+                            value="@foreach($product->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->price : ''}}@endforeach"
+                            required step=".01"
+                        >
+                        </div> 
+                    @endforeach
                     <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -73,9 +88,28 @@
 @section('javascript')
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        showPackages();
+        var $eventLog = $(".js-event-log");
+        $packageSelect = $(".select2");
+        $packageSelect.on("change", function (e) {
+            showPackages();
+        });
 
-	
-
+        function showPackages() {
+            selectValues = $('#packages').val();
+            var divs = $('.package-price');
+            $.each(divs, function(target) {
+                var id = $(this).attr('data-id');
+                // console.log(id);
+                if($.inArray(id, selectValues) > -1) {
+                    $('[data-id="'+id+'"]').show();
+                } else {
+                    $('[data-id="'+id+'"]').hide();
+                }
+            });
+        }
+    });
 </script>
 
 @stop

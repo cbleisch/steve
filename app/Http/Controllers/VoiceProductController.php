@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 
 use App\Models\VoiceProduct;
+use App\Models\ProductPackage;
 
 class VoiceProductController extends Controller {
 
@@ -35,7 +36,8 @@ class VoiceProductController extends Controller {
 	public function index()
 	{
 		return view('voice.index')
-				->with('products', VoiceProduct::all());
+				->with('products', VoiceProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function create($id = '')
@@ -46,12 +48,13 @@ class VoiceProductController extends Controller {
 			$product = new VoiceProduct;
 		}
 		return view('voice.create')
-				->with('product', $product);
+				->with('product', $product)
+				->with('packages', ProductPackage::all());
 	}
 
 	public function store(Request $request, $id = '')
 	{
-		// echo $id;
+		$prices = $request->input('packagePrice');
 		if(empty($id)) {
 			$product = new VoiceProduct;
 		} else {
@@ -60,6 +63,11 @@ class VoiceProductController extends Controller {
 
 		$product->fill($request->input());
 		if($product->save()) {
+			$product->packages()->sync([]);
+            foreach ($request->input('packages') as $packageID) {
+                $pPackage = ProductPackage::find($packageID);
+                $product->packages()->save($pPackage, ['price' => $prices[$packageID]]);
+		 	} 
 			flash()->success($product->name . ' was saved.');
 		} else {
 			flash()->danger($product->name . ' could not be saved.');
@@ -67,7 +75,8 @@ class VoiceProductController extends Controller {
 
 		return redirect()
 				->route('voice.index.get')
-				->with('products', VoiceProduct::all());
+				->with('products', VoiceProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function destroy($id)
@@ -75,7 +84,8 @@ class VoiceProductController extends Controller {
 		voiceProduct::destroy($id);
 		return redirect()
 				->route('voice.index.get')
-				->with('products', VoiceProduct::all());	
+				->with('products', VoiceProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 }

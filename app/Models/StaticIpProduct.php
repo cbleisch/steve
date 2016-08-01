@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class IPProduct extends Model {
+class StaticIpProduct extends Model {
 
     use SoftDeletes;
     public $timestamps = true;
@@ -11,8 +11,7 @@ class IPProduct extends Model {
 	protected $dates = ['deleted_at'];
 	protected $fillable = ['name', 'spp', 'dpp', 'tpp'];
 
-    public function locations()
-    {
-    	// return $this->hasMany('\App\Models\CustomerLocation');
+    public function packages() {
+        return $this->belongsToMany('App\Models\ProductPackage', 'product_package_static_ip_product')->withPivot('price');
     }
 }

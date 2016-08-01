@@ -44,16 +44,18 @@
                 <table class="table table-responsive table-bordered table-primary">
                     <thead>
                         <tr>
+                            <th style="width: 2%"></th>
                             <th><strong>Name</strong></th>
                             <th></th>
                         </tr>
                     </thead>
                     @foreach($packages as $package)
                         <tr>
+                            <td style="width: 2%"><i class="fa fa-bars"></i></td>
                             <td>{{ $package->name }}</td>
                             <td class="text-right" style="width: 15%">
-                                <a href="{{ URL::route('ip.create.get', [$package->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                <form action="{{ URL::route('ip.destroy.post', [$package->id]) }}" method="POST" class="form-inline">
+                                <a href="{{ URL::route('package.create.get', [$package->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                <form action="{{ URL::route('package.destroy.post', [$package->id]) }}" method="POST" class="form-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a class="btn btn-danger destroy"><i class="fa fa-trash"></i></a>
                                 </form>

@@ -45,18 +45,24 @@
                     <thead>
                         <tr>
                             <th><strong>Name</strong></th>
-                            <th class="text-right"><strong>Single Play Price</strong></th>
-                            <th class="text-right"><strong>Double Play Price</strong></th>
-                            <th class="text-right"><strong>Triple Play Price</strong></th>
+                            @foreach($packages as $package)
+                                <th class="text-right"><strong>{{ $package->name }} Price</strong></th>
+                            @endforeach
                             <th></th>
                         </tr>
                     </thead>
                     @foreach($products as $product)
                         <tr>
                             <td>{{ $product->name }}</td>
-                            <td class="text-right">${{ $product->spp }}</td>
-                            <td class="text-right">${{ $product->dpp }}</td>
-                            <td class="text-right">${{ $product->tpp }}</td>
+                            @foreach($packages as $package)
+                                <td class="text-right">
+                                    @forelse($product->packages as $pPackage)
+                                        {{ $package->id == $pPackage->id ? $pPackage->pivot->price : '' }}
+                                    @empty
+                                        <span class="text-warning">Not available</span>
+                                    @endforelse
+                                </td>
+                            @endforeach
                             <td class="text-right" style="width: 15%">
                                 <a href="{{ URL::route('internet.create.get', [$product->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                 <form action="{{ URL::route('internet.destroy.post', [$product->id]) }}" method="POST" class="form-inline">

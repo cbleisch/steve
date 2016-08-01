@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 
 use App\Models\InternetProduct;
+use App\Models\ProductPackage;
 
 class InternetProductController extends Controller {
 
@@ -35,7 +36,8 @@ class InternetProductController extends Controller {
 	public function index()
 	{
 		return view('internet.index')
-				->with('products', InternetProduct::all());
+				->with('products', InternetProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function create($id = '')
@@ -46,12 +48,13 @@ class InternetProductController extends Controller {
 			$product = new InternetProduct;
 		}
 		return view('internet.create')
-				->with('product', $product);
+				->with('product', $product)
+				->with('packages', ProductPackage::all());
 	}
 
 	public function store(Request $request, $id = '')
 	{
-		// echo $id;
+		$prices = $request->input('packagePrice');
 		if(empty($id)) {
 			$product = new InternetProduct;
 		} else {
@@ -61,6 +64,11 @@ class InternetProductController extends Controller {
 		$product->fill($request->input());
 		
 		if($product->save()) {
+            $product->packages()->sync([]);
+            foreach ($request->input('packages') as $packageID) {
+                $pPackage = ProductPackage::find($packageID);
+                $product->packages()->save($pPackage, ['price' => $prices[$packageID]]);
+		 	} 
 			flash()->success($product->name . ' was saved.');
 		} else {
 			flash()->danger($product->name . ' could not be saved.');
@@ -68,7 +76,8 @@ class InternetProductController extends Controller {
 
 		return redirect()
 				->route('internet.index.get')
-				->with('products', InternetProduct::all());
+				->with('products', InternetProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 
 	public function destroy($id)
@@ -76,6 +85,7 @@ class InternetProductController extends Controller {
 		InternetProduct::destroy($id);
 		return redirect()
 				->route('internet.index.get')
-				->with('products', InternetProduct::all());	
+				->with('products', InternetProduct::all())
+				->with('packages', ProductPackage::all());
 	}
 }

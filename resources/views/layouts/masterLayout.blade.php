@@ -23,7 +23,6 @@
     
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     
-    <link rel="shortcut icon" href="{{ asset('/images/logo.png') }}">
 
     <title>
     	{{ env('PROJECT_NAME') }}
@@ -213,6 +212,7 @@
         //initialize the javascript
         App.init();        
         $('div.alert').not('.alert-important').delay(3000).slideUp(300);
+        $('.select2').select2();
     });
 
     $('#goto-order').click(function (event) {
