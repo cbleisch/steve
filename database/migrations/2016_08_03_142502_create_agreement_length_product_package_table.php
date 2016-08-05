@@ -21,6 +21,7 @@ class CreateAgreementLengthProductPackageTable extends Migration
             $table->integer('product_package_id')->unsigned()->index();
             $table->foreign('product_package_id')->references('id')->on('product_packages')->onDelete('cascade');
             
+            $table->decimal('installation_fee', 5, 2);
             $table->timestamps();
         });
     }

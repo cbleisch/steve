@@ -45,9 +45,7 @@
 @stop
 
 @section('content')
-<div class="row">
-	<div class="col-md-12">
-		<div class="block-flat">
+    <div class="block-flat">
 			<div class="content" style="margin-top:-20px">
                 <form action="{{ URL::route('internet.store', [$product->id]) }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -80,9 +78,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
 			</div>
-		</div>
 	</div>
-</div>
 @stop
 
 @section('javascript')

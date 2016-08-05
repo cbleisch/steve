@@ -90,8 +90,11 @@ class InternetProductController extends Controller {
 	}
 	
 	public function getPrice($id, $packageID) {
-		$product = InternetProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
-
-		return $product[0]->pivot->price;
+		if($id && $packageID) {
+			$product = InternetProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+			return $product[0]->pivot->price;
+		} else {
+			return '0.00';
+		}
 	}
 }

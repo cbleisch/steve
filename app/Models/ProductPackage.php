@@ -9,7 +9,7 @@ class ProductPackage extends Model {
     public $timestamps = true;
     protected $table = 'product_packages';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['name', 'voice_lines_under_four_price', 'voice_lines_over_four_price'];
+    protected $fillable = ['name', 'voice_lines_under_four_price', 'voice_lines_over_four_price', 'phone_activation_fee'];
 
     public function internetProducts() {
         return $this->belongsToMany('App\Models\InternetProduct')->withPivot('price');
@@ -28,6 +28,6 @@ class ProductPackage extends Model {
     }
 
     public function agreementLengths() {
-        return $this->belongsToMany('App\Models\AgreementLength');
+        return $this->belongsToMany('App\Models\AgreementLength')->withPivot('installation_fee');
     }
 }

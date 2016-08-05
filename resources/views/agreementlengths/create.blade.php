@@ -37,41 +37,48 @@
 @stop
 
 @section('content')
-<div class="row">
-	<div class="col-md-12">
-		<div class="block-flat">
-			<div class="content" style="margin-top:-20px">
-                <form action="{{ URL::route('agreementLength.store', [$agreementLength->id]) }}" method="POST">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Agreement Length Name" value="{{ $agreementLength->name or '' }}" required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="tpp">Product Packages</label><br />
-                        <select class="select2" multiple style="width: 100%" name="packages[]" id="packages[]">
-                            @foreach($packages as $package)
-                                <option value="{{ $package->id }}"
-                                    @foreach($agreementLength->packages as $aPackage)
-                                        {{ $aPackage->id == $package->id  ? 'selected' : ''}}
-                                    @endforeach
-                                >{{ $package->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-			</div>
+	<div class="block-flat">
+		<div class="content" style="margin-top:-20px">
+            <form action="{{ URL::route('agreementLength.store', [$agreementLength->id]) }}" method="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Agreement Length Name" value="{{ $agreementLength->name or '' }}" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="tpp">Product Packages</label><br />
+                    <select class="select2" multiple style="width: 100%" name="packages[]" id="packages[]">
+                        @foreach($packages as $package)
+                            <option value="{{ $package->id }}"
+                                @foreach($agreementLength->packages as $aPackage)
+                                    {{ $aPackage->id == $package->id  ? 'selected' : ''}}
+                                @endforeach
+                            >{{ $package->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                @foreach($packages as $package)
+                   <div class="form-group installation-fees" data-id="{{$package->id}}" style="display: none">
+                    <label for="">{{ $package->name }} Installation Fee</label>
+                    <input type="number" class="form-control" id="installationFee[{{ $package->id }}]" name="installationFee[{{ $package->id }}]" placeholder="0.00"
+                        value="@foreach($agreementLength->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->installation_fee : ''}}@endforeach"
+                        step=".01"
+                    >
+                    </div> 
+                @endforeach
+                <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
 		</div>
 	</div>
-</div>
 @stop
 
 @section('javascript')
 
 <script type="text/javascript">
     $(document).ready(function() {
+
         showPackages();
         var $eventLog = $(".js-event-log");
         $packageSelect = $(".select2");
@@ -81,7 +88,7 @@
 
         function showPackages() {
             selectValues = $('[name="packages[]"]').val();
-            var divs = $('.package-price');
+            var divs = $('.installation-fees');
             $.each(divs, function(target) {
                 var id = $(this).attr('data-id');
                 // console.log(id);

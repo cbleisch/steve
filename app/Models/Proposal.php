@@ -9,7 +9,30 @@ class Proposal extends Model {
     public $timestamps = true;
 	protected $table = 'proposals';
 	protected $dates = ['deleted_at'];
-	protected $fillable = [];
-
+	protected $fillable = [
+		'customer',
+		'product_package_id',
+		'agreement_length_id',
+		'internet_product_id',
+			'internet_product_price',
+			'internet_product_price_extended',
+		'static_ip_product_id',
+			'static_ip_product_price',
+			'static_ip_product_price_extended',
+		'voice_lines_under_four_qty',
+			'voice_lines_under_four_price',
+			'voice_lines_under_four_price_extended',
+		'voice_lines_over_four_qty',
+			'voice_lines_over_four_price',
+			'voice_lines_over_four_price_extended',
+		'tv_product_id',
+			'tv_product_price',
+			'tv_product_price_extended',
+		'standard_installation_fee_price',
+			'standard_installation_fee_price_extended',
+		'phone_activation_qty',
+			'phone_activation_price',
+			'phone_activation_price_extended'
+	];
     
 }

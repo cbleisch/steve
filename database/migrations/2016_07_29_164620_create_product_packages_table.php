@@ -17,6 +17,7 @@ class CreateProductPackagesTable extends Migration
             $table->string('name')->index();
             $table->decimal('voice_lines_under_four_price', 5, 2);
             $table->decimal('voice_lines_over_four_price', 5, 2);
+            $table->decimal('phone_activation_fee', 5, 2);
             $table->timestamps();
             $table->softDeletes();
         });

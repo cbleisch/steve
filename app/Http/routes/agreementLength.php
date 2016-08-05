@@ -8,7 +8,7 @@
         Route::get('/agreementLengths/create/{id?}', ['as' => 'agreementLength.create.get', 'uses' => 'AgreementLengthController@create']);
         Route::post('/agreementLengths/store/{id?}', ['as' => 'agreementLength.store', 'uses' => 'AgreementLengthController@store']);
         Route::post('/agreementLengths/destroy/{id?}', ['as' => 'agreementLength.destroy.post', 'uses' => 'AgreementLengthController@destroy']);
-        
+        Route::get('/agreementLengths/{id}/{packageID}/getPrice', ['as' => 'agreementLength.price.get', 'uses' => 'AgreementLengthController@getPrice']);
         
         // End Item routes
         

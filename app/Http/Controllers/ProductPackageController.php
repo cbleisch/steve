@@ -101,17 +101,6 @@ class ProductPackageController extends Controller {
 			return ['id' => $length->id, 'text' => $length->name];
 		});
 
-		// var_dump($internetProducts);
-
-		// $internetProducts = $package->internetProducts->toJson();
-		// var_dump($internetProducts);
-		// die;
-
-		// $tvProducts = $package->tvProducts->lists('name', 'id');
-		// $voiceProducts = $package->voiceProducts->lists('name', 'id');
-		// $ipProducts = $package->staticIpProducts->lists('name', 'id');
-		// $agreementLengths = $package->agreementLengths->lists('name', 'id');
-
 		return response()->json([
 			'internetSelect' => $internetProducts,
 			'tvSelect' => $tvProducts,

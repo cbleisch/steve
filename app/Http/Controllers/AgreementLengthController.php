@@ -42,6 +42,7 @@ class AgreementLengthController extends Controller {
 
 	public function create($id = '')
 	{
+
 		if(!empty($id)) {
 			$agreementLength = AgreementLength::find($id);
 		} else {
@@ -54,7 +55,7 @@ class AgreementLengthController extends Controller {
 
 	public function store(Request $request, $id = '')
 	{
-		// $prices = $request->input('packagePrice');
+		$installationFees = $request->input('installationFee');
 		if(empty($id)) {
 			$agreementLength = new AgreementLength;
 		} else {
@@ -62,12 +63,13 @@ class AgreementLengthController extends Controller {
 		}
 
 		$agreementLength->fill($request->input());
+
 		if($agreementLength->save()) {
-			$agreementLength->packages()->sync($request->input('packages'));
-    //         foreach ($request->input('packages') as $packageID) {
-    //             $pPackage = ProductPackage::find($packageID);
-    //             $agreementLength->packages()->save($pPackage, ['price' => $prices[$packageID]]);
-		 	// } 
+			$agreementLength->packages()->sync([]);
+            foreach ($request->input('packages') as $packageID) {
+                $pPackage = ProductPackage::find($packageID);
+                $agreementLength->packages()->save($pPackage, ['installation_fee' => $installationFees[$packageID]]);
+		 	} 
 			flash()->success($agreementLength->name . ' was saved.');
 		} else {
 			flash()->danger($agreementLength->name . ' could not be saved.');
@@ -79,13 +81,18 @@ class AgreementLengthController extends Controller {
 				->with('packages', ProductPackage::all());
 	}
 
-	public function destroy($id)
-	{
-		AgreementLength::destroy($id);
-		return redirect()
-				->route('agreementLength.index.get')
-				->with('agreementLengths', AgreementLength::all())
-				->with('packages', ProductPackage::all());	
-	}
+    public function destroy($id)
+    {
+        AgreementLength::destroy($id);
+        return redirect()
+                ->route('agreementLength.index.get')
+                ->with('agreementLengths', AgreementLength::all())
+                ->with('packages', ProductPackage::all());	
+    }
 
+    public function getPrice($id, $packageID) {
+        $agreementLength = AgreementLength::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+
+        return $agreementLength[0]->pivot->installation_fee;
+    }
 }

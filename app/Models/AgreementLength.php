@@ -12,6 +12,6 @@ class AgreementLength extends Model {
 	protected $fillable = ['name'];
 
     public function packages() {
-        return $this->belongsToMany('App\Models\ProductPackage');
+        return $this->belongsToMany('App\Models\ProductPackage')->withPivot('installation_fee');
     }
 }
