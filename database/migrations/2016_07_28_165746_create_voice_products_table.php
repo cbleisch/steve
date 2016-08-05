@@ -15,9 +15,6 @@ class CreateVoiceProductsTable extends Migration
         Schema::create('voice_products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();
-            $table->decimal('spp', 5, 2);
-            $table->decimal('dpp', 5, 2);
-            $table->decimal('tpp', 5, 2);
             $table->timestamps();
             $table->softDeletes();
         });

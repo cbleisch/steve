@@ -68,11 +68,11 @@
                         </select>
                     </div>
                     @foreach($packages as $package)
-                       <div class="form-group {{ strtolower(str_replace(' ', '-', 'package-'.$package->id)) }} package-price" data-id="{{$package->id}}" style="display: none">
+                       <div class="form-group package-price" data-id="{{$package->id}}" style="display: none">
                         <label for="">{{ $package->name }} Price</label>
                         <input type="number" class="form-control" id="packagePrice[{{ $package->id }}]" name="packagePrice[{{ $package->id }}]" placeholder="0.00"
                             value="@foreach($product->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->price : ''}}@endforeach"
-                            required step=".01"
+                            step=".01"
                         >
                         </div> 
                     @endforeach

@@ -8,7 +8,7 @@
         Route::get('/ipProducts/create/{id?}', ['as' => 'ip.create.get', 'uses' => 'StaticIpProductController@create']);
         Route::post('/ipProducts/store/{id?}', ['as' => 'ip.store', 'uses' => 'StaticIpProductController@store']);
         Route::post('/ipProducts/destroy/{id?}', ['as' => 'ip.destroy.post', 'uses' => 'StaticIpProductController@destroy']);
-        
+        Route::get('/ipProducts/{id}/{packageID}/getPrice', ['as' => 'ip.price.get', 'uses' => 'StaticIpProductController@getPrice']);
         
         // End Item routes
         

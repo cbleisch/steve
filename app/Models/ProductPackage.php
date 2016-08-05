@@ -9,21 +9,25 @@ class ProductPackage extends Model {
     public $timestamps = true;
     protected $table = 'product_packages';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'voice_lines_under_four_price', 'voice_lines_over_four_price'];
 
     public function internetProducts() {
-        return $this->belongsToMany('App\Models\InternetProduct');
+        return $this->belongsToMany('App\Models\InternetProduct')->withPivot('price');
     }
     
     public function voiceProducts() {
-        return $this->belongsToMany('App\Models\VoiceProduct');
+        return $this->belongsToMany('App\Models\VoiceProduct')->withPivot('price');
     }
 
     public function tvProducts() {
-        return $this->belongsToMany('App\Models\TVProduct');
+        return $this->belongsToMany('App\Models\TvProduct')->withPivot('price');
     }
 
-    public function staticIPProducts() {
-        return $this->belongsToMany('App\Models\TVProduct');
+    public function staticIpProducts() {
+        return $this->belongsToMany('App\Models\StaticIpProduct')->withPivot('price');
+    }
+
+    public function agreementLengths() {
+        return $this->belongsToMany('App\Models\AgreementLength');
     }
 }

@@ -88,4 +88,10 @@ class InternetProductController extends Controller {
 				->with('products', InternetProduct::all())
 				->with('packages', ProductPackage::all());
 	}
+	
+	public function getPrice($id, $packageID) {
+		$product = InternetProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+
+		return $product[0]->pivot->price;
+	}
 }

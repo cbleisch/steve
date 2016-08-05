@@ -106,7 +106,7 @@ div.md-modal span.header-text {
 }
 div.md-modal .input-group-addon *,
 div#pcont .input-group-addon * {
-	color: #FFF
+	/*color: #FFF*/
 }
 
 .form-control {

@@ -61,7 +61,7 @@
                                 @endforeach
                                 </td>
                             @endforeach
-                            <td class="text-right" style="width: 15%">
+                            <td class="text-center" style="width: 15%">
                                 <a href="{{ URL::route('tv.create.get', [$product->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                 <form action="{{ URL::route('tv.destroy.post', [$product->id]) }}" method="POST" class="form-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

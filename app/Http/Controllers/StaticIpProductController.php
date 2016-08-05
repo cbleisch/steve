@@ -88,4 +88,10 @@ class StaticIpProductController extends Controller {
 				->with('products', StaticIpProduct::all())
 				->with('packages', ProductPackage::all());
 	}
+
+	public function getPrice($id, $packageID) {
+		$product = StaticIpProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+
+		return $product[0]->pivot->price;
+	}
 }

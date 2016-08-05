@@ -22,13 +22,13 @@
 @stop
 
 @section('breadcrumbs')
-<li><a href="{{ URL::route('tv.index.get') }}">TV Products</a></li>
-<li class="active">{{ $product->id ? 'Modify' : 'Create'  }}</li>
+<li><a href="{{ URL::route('agreementLength.index.get') }}">Agreement Lengths</a></li>
+<li class="active">{{ $agreementLength->id ? 'Modify' : 'Create'  }}</li>
 @stop
 
 @section('page-header')
 <h3>
-    {{ $product->id ? 'Modify' : 'Create'  }} TV Product: {{ $product->name }}
+    {{ $agreementLength->id ? 'Modify' : 'Create'  }} Agreement Length: {{ $agreementLength->name }}
 </h3>
 @stop
 
@@ -41,33 +41,24 @@
 	<div class="col-md-12">
 		<div class="block-flat">
 			<div class="content" style="margin-top:-20px">
-                <form action="{{ URL::route('tv.store', [$product->id]) }}" method="POST">
+                <form action="{{ URL::route('agreementLength.store', [$agreementLength->id]) }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Product Name" value="{{ $product->name or '' }}" required autofocus>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Agreement Length Name" value="{{ $agreementLength->name or '' }}" required autofocus>
                     </div>
                     <div class="form-group">
                         <label for="tpp">Product Packages</label><br />
                         <select class="select2" multiple style="width: 100%" name="packages[]" id="packages[]">
                             @foreach($packages as $package)
                                 <option value="{{ $package->id }}"
-                                    @foreach($product->packages as $aPackage)
+                                    @foreach($agreementLength->packages as $aPackage)
                                         {{ $aPackage->id == $package->id  ? 'selected' : ''}}
                                     @endforeach
                                 >{{ $package->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    @foreach($packages as $package)
-                       <div class="form-group {{ strtolower(str_replace(' ', '-', 'package-'.$package->id)) }} package-price" data-id="{{$package->id}}" style="display: none">
-                        <label for="">{{ $package->name }} Price</label>
-                        <input type="number" class="form-control" id="packagePrice[{{ $package->id }}]" name="packagePrice[{{ $package->id }}]" placeholder="0.00"
-                            value="@foreach($product->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->price : ''}}@endforeach"
-                            step=".01"
-                        >
-                        </div> 
-                    @endforeach
                     <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

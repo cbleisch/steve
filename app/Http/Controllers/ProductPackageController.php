@@ -78,4 +78,47 @@ class ProductPackageController extends Controller {
 				->route('package.index.get')
 				->with('products', ProductPackage::all());	
 	}
+
+	public function getSelects($id)
+	{
+		$package = ProductPackage::find($id);
+		// $internetProducts = $package->internetProducts->lists(['text' => 'name', 'id' => 'id']);
+		$internetProducts = $package->internetProducts->map(function($product) {
+			return ['id' => $product->id, 'text' => $product->name, 'price' => $product->pivot->price];
+		});
+		$tvProducts = $package->tvProducts->map(function($product) {
+			return ['id' => $product->id, 'text' => $product->name, 'price' => $product->pivot->price];
+		});
+		$voiceProducts = $package->voiceProducts->map(function($product) {
+			return ['id' => $product->id, 'text' => $product->name, 'price' => $product->pivot->price];
+		});
+
+		$ipProducts = $package->staticIpProducts->map(function($product) {
+			return ['id' => $product->id, 'text' => $product->name, 'price' => $product->pivot->price];
+		});
+
+		$agreementLengths = $package->agreementLengths->map(function($length) {
+			return ['id' => $length->id, 'text' => $length->name];
+		});
+
+		// var_dump($internetProducts);
+
+		// $internetProducts = $package->internetProducts->toJson();
+		// var_dump($internetProducts);
+		// die;
+
+		// $tvProducts = $package->tvProducts->lists('name', 'id');
+		// $voiceProducts = $package->voiceProducts->lists('name', 'id');
+		// $ipProducts = $package->staticIpProducts->lists('name', 'id');
+		// $agreementLengths = $package->agreementLengths->lists('name', 'id');
+
+		return response()->json([
+			'internetSelect' => $internetProducts,
+			'tvSelect' => $tvProducts,
+			'voiceSelect' => $voiceProducts,
+			'agreementLengthsSelect' => $agreementLengths,
+			'ipSelect' => $ipProducts,
+			'package' => $package
+			]);
+	}
 }

@@ -8,7 +8,7 @@
         Route::get('/tvProducts/create/{id?}', ['as' => 'tv.create.get', 'uses' => 'TvProductController@create']);
         Route::post('/tvProducts/store/{id?}', ['as' => 'tv.store', 'uses' => 'TvProductController@store']);
         Route::post('/tvProducts/destroy/{id?}', ['as' => 'tv.destroy.post', 'uses' => 'TvProductController@destroy']);
-        
+        Route::get('/tvProducts/{id}/{packageID}/getPrice', ['as' => 'tv.price.get', 'uses' => 'TvProductController@getPrice']);
         // End Item routes
         
     // });

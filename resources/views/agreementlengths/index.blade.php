@@ -22,13 +22,13 @@
 @stop
 
 @section('breadcrumbs')
-<li class="active">Voice Products</li>
+<li class="active">Agreement Lengths</li>
 @stop
 
 @section('page-header')
-    <a class="pull-right btn btn-success" href="{{ URL::route('voice.create.get') }}">Add Voice Product</a>
+    <a class="pull-right btn btn-success" href="{{ URL::route('agreementLength.create.get') }}">Add Agreement Length</a>
 <h3>
-    Voice Products
+    Agreement Lengths
 </h3>
 @stop
 
@@ -46,24 +46,26 @@
                         <tr>
                             <th><strong>Name</strong></th>
                             @foreach($packages as $package)
-                                <th class="text-right"><strong>{{ $package->name }} Price</strong></th>
+                                <th class="text-right"><strong>{{ $package->name }}</strong></th>
                             @endforeach
                             <th></th>
                         </tr>
                     </thead>
-                    @foreach($products as $product)
+                    @foreach($agreementLengths as $agreementLength)
                         <tr>
-                            <td>{{ $product->name }}</td>
+                            <td>{{ $agreementLength->name }}</td>
                             @foreach($packages as $package)
                                 <td class="text-right">
-                                @foreach($product->packages as $pPackage)
-                                    {{ $package->id == $pPackage->id ? $pPackage->pivot->price . ' per line' : '' }}
-                                @endforeach
+                                    @forelse($agreementLength->packages as $alPackage)
+                                        {{ $package->id == $alPackage->id ? 'Available' : '' }}
+                                    @empty
+                                        <span class="text-warning">Not available</span>
+                                    @endforelse
                                 </td>
                             @endforeach
                             <td class="text-center" style="width: 15%">
-                                <a href="{{ URL::route('voice.create.get', [$product->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                <form action="{{ URL::route('voice.destroy.post', [$product->id]) }}" method="POST" class="form-inline">
+                                <a href="{{ URL::route('agreementLength.create.get', [$agreementLength->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                <form action="{{ URL::route('agreementLength.destroy.post', [$agreementLength->id]) }}" method="POST" class="form-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a class="btn btn-danger destroy"><i class="fa fa-trash"></i></a>
                                 </form>
@@ -80,10 +82,10 @@
 @section('javascript')
 
 <script type="text/javascript">
-	$(document).ready(function() {
+    $(document).ready(function() {
         $('.destroy').click(function(e) {
             e.preventDefault();
-            if(confirm('Remove this product?')) {
+            if(confirm('Remove this agreement length?')) {
                 $(e.target).closest('form').submit();
             }
         });

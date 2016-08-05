@@ -47,6 +47,20 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Package Name" value="{{ $package->name or '' }}" required autofocus>
                     </div>
+                    <div class="form-group">
+                        <label for="voice_lines_under_four_price">Price for 1-3 Voice Lines</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                            <input type="number" class="form-control" id="voice-lines-under-four-price" name="voice_lines_under_four_price" placeholder="0.00" value="{{ $package->voice_lines_under_four_price or '' }}" required step=".01">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="voice_lines_over_four_price">Price for 4+ Voice Lines</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                            <input type="number" class="form-control" id="voice-lines-over-four-price" name="voice_lines_over_four_price" placeholder="0.00" value="{{ $package->voice_lines_under_four_price or '' }}" required step=".01">
+                        </div>
+                    </div>
                     <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

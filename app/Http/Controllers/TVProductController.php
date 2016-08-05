@@ -88,4 +88,10 @@ class TvProductController extends Controller {
 				->with('packages', ProductPackage::all());	
 	}
 
+	public function getPrice($id, $packageID) {
+		$product = TvProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+
+		return $product[0]->pivot->price;
+	}
+
 }

@@ -22,13 +22,13 @@
 @stop
 
 @section('breadcrumbs')
-<li class="active">Voice Products</li>
+<li class="active">Proposals</li>
 @stop
 
 @section('page-header')
-    <a class="pull-right btn btn-success" href="{{ URL::route('voice.create.get') }}">Add Voice Product</a>
+    <a class="pull-right btn btn-success" href="{{ URL::route('proposal.create.get') }}">Add Proposal</a>
 <h3>
-    Voice Products
+    Proposals
 </h3>
 @stop
 
@@ -44,26 +44,17 @@
                 <table class="table table-responsive table-bordered table-primary">
                     <thead>
                         <tr>
-                            <th><strong>Name</strong></th>
-                            @foreach($packages as $package)
-                                <th class="text-right"><strong>{{ $package->name }} Price</strong></th>
-                            @endforeach
+                            <th><strong>Customer Name</strong></th>
                             <th></th>
                         </tr>
                     </thead>
-                    @foreach($products as $product)
+                    @foreach($proposals as $proposal)
                         <tr>
-                            <td>{{ $product->name }}</td>
-                            @foreach($packages as $package)
-                                <td class="text-right">
-                                @foreach($product->packages as $pPackage)
-                                    {{ $package->id == $pPackage->id ? $pPackage->pivot->price . ' per line' : '' }}
-                                @endforeach
-                                </td>
-                            @endforeach
+                            <td>{{ $proposal->customer }}</td>
+                            
                             <td class="text-center" style="width: 15%">
-                                <a href="{{ URL::route('voice.create.get', [$product->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                <form action="{{ URL::route('voice.destroy.post', [$product->id]) }}" method="POST" class="form-inline">
+                                <a href="{{ URL::route('internet.create.get', [$proposal->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                <form action="{{ URL::route('internet.destroy.post', [$proposal->id]) }}" method="POST" class="form-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a class="btn btn-danger destroy"><i class="fa fa-trash"></i></a>
                                 </form>
@@ -78,16 +69,14 @@
 @stop
 
 @section('javascript')
-
 <script type="text/javascript">
-	$(document).ready(function() {
+    $(document).ready(function() {
         $('.destroy').click(function(e) {
             e.preventDefault();
-            if(confirm('Remove this product?')) {
+            if(confirm('Remove this proposal?')) {
                 $(e.target).closest('form').submit();
             }
         });
     });
 </script>
-
 @stop
