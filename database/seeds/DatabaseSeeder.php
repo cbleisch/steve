@@ -13,5 +13,9 @@ class DatabaseSeeder extends Seeder {
     {
         Model::unguard();
         $this->call(AgreementLengthTableSeeder::class);
+        $this->call(InternetProductTableSeeder::class);
+        $this->call(ProductPackageTableSeeder::class);
+        $this->call(StaticIpProductTableSeeder::class);
+        $this->call(TvProductTableSeeder::class);
     }
 }

@@ -8,7 +8,7 @@
         Route::get('/internetProducts/create/{id?}', ['as' => 'internet.create.get', 'uses' => 'InternetProductController@create']);
         Route::post('/internetProducts/store/{id?}', ['as' => 'internet.store', 'uses' => 'InternetProductController@store']);
         Route::post('/internetProducts/destroy/{id?}', ['as' => 'internet.destroy.post', 'uses' => 'InternetProductController@destroy']);
-        Route::get('/internetProducts/{id}/{packageID}/getPrice', ['as' => 'internet.price.get', 'uses' => 'InternetProductController@getPrice']);
+        Route::get('/internetProducts/{id}/{packageID}/getPrice/', ['as' => 'internet.price.get', 'uses' => 'InternetProductController@getPrice']);
         // End Item routes
         
     // });

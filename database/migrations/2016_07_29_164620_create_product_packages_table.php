@@ -18,6 +18,8 @@ class CreateProductPackagesTable extends Migration
             $table->decimal('voice_lines_under_four_price', 5, 2);
             $table->decimal('voice_lines_over_four_price', 5, 2);
             $table->decimal('phone_activation_fee', 5, 2);
+            $table->decimal('additional_tv_outlet_price', 5, 2);
+            $table->decimal('hd_tv_per_outlet_price', 5, 2);
             $table->timestamps();
             $table->softDeletes();
         });

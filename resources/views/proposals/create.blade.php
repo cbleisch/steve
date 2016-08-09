@@ -22,6 +22,11 @@
     .select2 {
         width: 100% !important;
     }
+
+    .block-flat .content h4 {
+        margin-top: initial;
+        line-height: 16px;
+    }
 </style>
 @stop
 
@@ -46,14 +51,14 @@
                 <form action="{{ URL::route('proposal.store', [$proposal->id]) }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
-                        <label for="name">Customer Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Customer Name" value="{{ $proposal->customer or '' }}" required autofocus>
+                        <label for="customer">Customer Name</label>
+                        <input type="text" class="form-control" id="customer" name="customer" placeholder="Customer Name" value="{{ $proposal->customer or '' }}" required autofocus>
                     </div>
                     <div class="form-group">
-                        <label for="packages[]">Product Packages</label>
-                        <select class="select2" style="width: 100%" name="package_id" id="package-id">
+                        <label for="product_package_id">Product Packages</label>
+                        <select class="select2" style="width: 100%" name="product_package_id" id="product-package-id">
                             @foreach($packages as $package)
-                                <option value="{{ $package->id }}">{{ $package->name }}</option>
+                                <option value="{{ $package->id }}" {{ $package->id == $proposal->product_package_id ? 'selected' : '' }}>{{ $package->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -78,7 +83,7 @@
                                 <label for="internet_product_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="internet_product_price" id="internet-product-price" readonly="" />
+                                    <input type="number" class="form-control text-right" name="internet_product_price" id="internet-product-price" readonly="" step=".01" />
                                 </div>
                             </div>
                         </div>
@@ -87,7 +92,46 @@
                                 <label for="internet_product_cost">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="internet_product_price_extended" id="internet-product-price-extended" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="internet_product_price_extended" id="internet-product-price-extended" step=".01" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12" style="position: fixed; float: right; right: 0px; z-index: 1000;">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading text-center">
+                                    <h4><span style="color: #fff">TOTALS</span></h4>
+                                </div>
+                                <div class="panel-body text-center">
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            <div class="form-group">
+                                                <h4><strong>Total Monthly</strong></h4>
+                                            </div>
+                                        </dt>
+                                        <dd>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                                    <input type="number" class="form-control text-right" name="total_monthly_charges" id="total-monthly-charges" step=".01" readonly="" />
+                                                </div>
+                                            </div>
+                                        </dd>
+                                        <dt>
+                                            <div class="form-group">
+                                                <h4><strong>Total 1-time Costs</strong></h4>
+                                            </div>
+                                        </dt>
+                                        <dd>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                                    <input type="number" class="form-control text-right" name="total_one_time_charges" id="total-one-time-charges" step=".01" readonly="" />
+                                                </div>
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +149,7 @@
                                 <label for="static_ip_product_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="static_ip_product_price" id="static-ip-product-price" readonly="" />
+                                    <input type="number" class="form-control text-right" name="static_ip_product_price" id="static-ip-product-price" step=".01" readonly="" />
                                 </div>
                             </div>
                         </div>
@@ -114,7 +158,33 @@
                                 <label for="static_ip_product_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="static_ip_product_price_extended" id="static-ip-product-price-extended" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="static_ip_product_price_extended" id="static-ip-product-price-extended" step=".01" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="">Equipment</label><br />
+                                Modem
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="modem_rental_price">Cost</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control text-right" name="modem_rental_price" id="modem-rental-price" step=".01" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="modem_rental_price_extended">Extended</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="modem_rental_price_extended" id="modem-rental-price-extended" step=".01" readonly="" />
                                 </div>
                             </div>
                         </div>
@@ -136,7 +206,7 @@
                                 <label for="">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="voice_lines_under_four_price" id="voice-lines-under-four-price" readonly="" />
+                                    <input type="number" class="form-control text-right" name="voice_lines_under_four_price" id="voice-lines-under-four-price" readonly="" step=".01" value="{{ $proposal->voice_lines_under_four_price or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -145,7 +215,7 @@
                                 <label for="">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="voice_lines_under_four_price_extended" id="voice-lines-under-four-price-extended" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="voice_lines_under_four_price_extended" id="voice-lines-under-four-price-extended" readonly="" step=".01" value="{{ $proposal->voice_lines_under_four_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -165,7 +235,7 @@
                                 <label for="voice_lines_over_four_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="voice_lines_over_four_price" id="voice-lines-over-four-price" readonly="" />
+                                    <input type="number" class="form-control text-right" name="voice_lines_over_four_price" id="voice-lines-over-four-price" step=".01" readonly="" />
                                 </div>
                             </div>
                         </div>
@@ -174,7 +244,7 @@
                                 <label for="voice_lines_over_four_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="voice_lines_over_four_price_extended" id="voice-lines-over-four-price-extended" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="voice_lines_over_four_price_extended" id="voice-lines-over-four-price-extended" step=".01" readonly="" />
                                 </div>
                             </div>
                         </div>
@@ -194,7 +264,7 @@
                                 <label for="tv_product_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="tv_product_price" id="tv-product-price" readonly="" />
+                                    <input type="number" class="form-control text-right" name="tv_product_price" id="tv-product-price" step=".01" readonly="" />
                                 </div>
                             </div>
                         </div>
@@ -203,7 +273,68 @@
                                 <label for="tv_product_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="tv_product_price_extended" id="tv-product-price-extended" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="tv_product_price_extended" id="tv-product-price-extended" step=".01" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="additional_tv_outlets_qty">Additional outlets (after 1<sup>st</sup>)</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                    <input type="number" class="form-control" name="additional_tv_outlets_qty" id="additional-tv-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_tv_outlets_qty ? $proposal->additional_tv_outlets_qty : 0 }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="additional_tv_outlets_price">Cost</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control text-right" name="additional_tv_outlets_price" id="voice-lines-under-four-price" readonly="" step=".01" value="{{ $proposal->additional_tv_outlets_price or '0.00' }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="additional_tv_outlets_price_extended">Extended</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="additional_tv_outlets_price_extended" id="additional-tv-outlets-price-extended" readonly="" step=".01" value="{{ $proposal->voice_lines_under_four_price_extended or '0.00' }}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="additional_hd_outlets_qty">HD Service per Outlet</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                    <input type="number" class="form-control" name="_qty" id="additional-hd-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_hd_outlets_qty ? $proposal->additional_hd_outlets_qty : 0 }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="additional_hd_outlets_price">Cost</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control text-right" name="additional_hd_outlets_price" id="additional-hd-outlets-price" readonly="" step=".01" value="{{ $proposal->additional_hd_outlets_price or '0.00' }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <div class="form-group">
+                                <label for="additional_hd_outlets_price_extended">Extended</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="additional_hd_outlets_price_extended" id="additional-hd-outlets-price-extended" readonly="" step=".01" value="{{ $proposal->additional_hd_outlets_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -212,14 +343,18 @@
                     <h3>1 time fees</h3>
                     <div class="row">
                         <div class="col-sm-4">
-                            <label for="standard_installation_fee">Standard Installation</label>
+                            <label for="standard_installation_fee">Standard Installation</label><br />
+                            <div class="form-group">
+                                <h4 id="product-package-label" class="label label-primary">Test</h4>
+                                <h4 id="agreement-length-label" class="label label-success">Test</h4>
+                            </div>
                         </div>
                         <div class="col-sm-2 text-center">
                             <div class="form-group">
                                 <label for="standard_installation_fee_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="standard_installation_fee_price" id="standard-installation-fee-price" readonly="" value="0.00" />
+                                    <input type="number" class="form-control text-right" name="standard_installation_fee_price" id="standard-installation-fee-price" readonly="" step=".01" value="{{ $proposal->standard_installation_free_price or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -228,7 +363,7 @@
                                 <label for="standard_installation_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="standard_installation_fee_price_extended" id="standard-installation-fee-price-extended" readonly="" value="0.00" />
+                                    <input type="number" class="form-control add-to-one-time-charges text-right" name="standard_installation_fee_price_extended" id="standard-installation-fee-price-extended" readonly="" step=".01" value="{{ $proposal->standard_installation_fee_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -239,7 +374,7 @@
                                 <label for="phone_activation_qty">Phone Activation(s)</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                    <input type="number" class="form-control" name="phone_activation_qty" id="phone-activation-qty" value="0" min="0" step="1" />
+                                    <input type="number" class="form-control" name="phone_activation_qty" id="phone-activation-qty" value="{{ $proposal->phone_activation_qty or '0' }}" min="0" max="4" step="1" />
                                 </div>
                             </div>
                         </div>
@@ -248,7 +383,7 @@
                                 <label for="standard_installation_fee_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="phone_activation_fee" id="phone-activation-fee" readonly="" value="0.00" />
+                                    <input type="number" class="form-control text-right" name="phone_activation_price" id="phone-activation-price" readonly="" step=".01" value="{{ $proposal->phone_activation_price or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -257,15 +392,11 @@
                                 <label for="standard_installation_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-total text-right" name="phone_activation_fee_extended" id="phone-activation-fee-extended" readonly="" value="0.00" />
+                                    <input type="number" class="form-control add-to-one-time-charges text-right" name="phone_activation_price_extended" id="phone-activation-price-extended" readonly="" step=".01" value="{{ $proposal->phone_activation_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p style="margin-top: 40px; margin-left: -5px">
-                        <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </p>
                 </form>
             </div>
         </div>
@@ -275,82 +406,137 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        packageSelects();
+        var originalData = [];
+        originalData['internet_product_id'] = {{ $proposal->internet_product_id or 0 }};
+        originalData['agreement_length_id'] = '{{ $proposal->agreement_length_id or 0 }}';
+        originalData['static_ip_product_id'] = '{{ $proposal->static_ip_product_id or 0 }}';
+        originalData['tv_product_id'] = '{{ $proposal->tv_product_id or 0 }}';
+        
+        var firstLoad = true;
+        packageSelects(firstLoad);
+        
+        function calcTotalMothlyCharges() {
+            var sum = 0;
+            $('.add-to-monthly-charges').each(function() {
+                if(!isNaN($(this).val()) && $(this).val() != '') {
+                    sum += parseFloat($(this).val());
+                }
+            });
+            $('#total-monthly-charges').val(sum);
+        }
+
+        function calcOneTimeCharges() {
+            var sum = 0;
+            $('.add-to-one-time-charges').each(function() {
+                if(!isNaN($(this).val()) && $(this).val() != '') {
+                    sum += parseFloat($(this).val());
+                }
+            });
+            $('#total-one-time-charges').val(sum);
+        }
+
+        $('.add-to-monthly-charges').on('change', function() {
+            calcTotalMothlyCharges();
+        });
+
+        $('.add-to-one-time-charges').on('change', function() {
+            calcOneTimeCharges();
+        });
+
 
 
         $('.length-select, .internet-select').select2()
-        $packageSelect = $("#package-id");
+        $packageSelect = $("#product-package-id");
         $internetProductSelect = $('#internet-product-id');
         $staticIpProductSelect = $('#static-ip-product-id');
         $tvProductSelect = $('#tv-product-id');
         $agreementLengthSelect = $('#agreement-length-id');
         
         $packageSelect.on("change", function (e) {
-            packageSelects();
+            packageSelects(false);
         });
 
         $internetProductSelect.on("change", function (e) {
             var productID = $('#internet-product-id').val();
-            var packageID = $('#package-id').val();
-            $.get('/internetProducts/'+productID+'/'+packageID+'/getPrice', function(data) {
-                $('#internet-product-price, #internet-product-price-extended').val(data);
+            var packageID = $('#product-package-id').val();
+            $.get('/internetProducts/'+productID+'/'+packageID+'/getPrice/', function(data) {
+                $('#internet-product-price, #internet-product-price-extended').val(data.productPrice).trigger('change');
+                $('#modem-rental-price, #modem-rental-price-extended').val(data.modemRentalPrice).trigger('change');
             });
         });
 
         $staticIpProductSelect.on("change", function (e) {
             var productID = $('#static-ip-product-id').val();
-            var packageID = $('#package-id').val();
+            var packageID = $('#product-package-id').val();
             $.get('/ipProducts/'+productID+'/'+packageID+'/getPrice', function(data) {
-                $('#static-ip-product-price, #static-ip-product-price-extended').val(data);
+                $('#static-ip-product-price, #static-ip-product-price-extended').val(data).trigger('change');
             });
         });
 
         $tvProductSelect.on("change", function (e) {
             var productID = $('#tv-product-id').val();
-            var packageID = $('#package-id').val();
+            var packageID = $('#product-package-id').val();
             $.get('/ipProducts/'+productID+'/'+packageID+'/getPrice', function(data) {
-                $('#tv-product-price, #tv-product-price-extended').val(data);
+                $('#tv-product-price, #tv-product-price-extended').val(data).trigger('change');
             });
         });
 
         $agreementLengthSelect.on("change", function (e) {
             var agreementLengthID = $('#agreement-length-id').val();
-            var packageID = $('#package-id').val();
+            var packageID = $('#product-package-id').val();
             $.get('/agreementLengths/'+agreementLengthID+'/'+packageID+'/getPrice', function(data) {
-                $('#standard-installation-fee-price, #standard-installation-fee-price-extended').val(data);
+                $('#standard-installation-fee-price, #standard-installation-fee-price-extended').val(data).trigger('change');
             });
+
+            // $('#agreement-length-label').text($(this).text());
+
+            var test = $('#agreement-length-id');
+            // var theSelection = $(test).select2('data').text;
+            // $('#agreement-length-label').text(theSelection);
         });
 
         $('[name="voice_lines_under_four_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#voice-lines-under-four-price').val();
-            $('[name="voice_lines_under_four_price_extended"]').val(price * qty);
+            $('#voice-lines-under-four-price-extended').val(price * qty).trigger('change');
             if(qty >= 3) {
                 $('#4-plus-row').show();
             } else {
                 $('#4-plus-row').hide();
             }
+            $('#phone-activation-qty').val(qty).trigger('change');
+            
         });
 
         $('[name="voice_lines_over_four_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#voice-lines-over-four-price').val();
-            $('[name="voice_lines_over_four_price_extended"]').val(price * qty);
+            $('#voice-lines-over-four-price-extended').val(price * qty).trigger('change');
+            
+            var max = parseInt($('#phone-activation-qty').attr('max'));
+            $('#phone-activation-qty').val(max).trigger('change');
         });
 
         $('[name="phone_activation_qty"]').on('change', function(e) {
             var qty = e.target.value;
-            var price = $('#phone-activation-fee').val();
-            $('[name="phone_activation_fee_extended"]').val(price * qty);
+            var price = $('#phone-activation-price').val();
+            $('#phone-activation-price-extended').val(price * qty).trigger('change');
         });
 
-        function packageSelects() {
-            var packageID = $('#package-id').val();
+        $('[name="additional_tv_outlets_qty"]').on('change', function(e) {
+            var qty = e.target.value;
+            var price = $('#additional-tv-outlets-price').val();
+            $('#additional-tv-outlets-price-extended').val(price * qty).trigger('change');
+        });
+
+        function packageSelects(firstLoad) {
+            var packageID = $('#product-package-id').val();
+
             $.get('/packages/'+packageID+'/getSelects', function(data) {
-                // console.log(data.internetSelect);
+                
                 $('#agreement-length-id').select2('destroy').html('');
                 $('#agreement-length-id').select2({
-                    data: data.agreementLengthsSelect
+                    data: data.agreementLengthsSelect,
                 });
 
                 $('#internet-product-id').select2('destroy').html('');
@@ -372,11 +558,27 @@
                 $('#voice-lines-over-four-price').val(data.package.voice_lines_over_four_price);
 
 
-                $('#phone-activation-fee').val(data.package.phone_activation_fee);
+                $('#phone-activation-price').val(data.package.phone_activation_fee);
+                
+                
+                var test = $('#product-package-id');
+                var theSelection = $(test).select2('data').text;
+                $('#product-package-label').text(theSelection);
+
+                if(firstLoad) {
+                    $('#agreement-length-id').val(originalData.agreement_length_id);
+                    $('#internet-product-id').val(originalData.internet_product_id);
+                    $('#static-ip-product-id').val(originalData.static_ip_product_id);
+                    $('#tv-product-id').val(originalData.tv_product_id);
+                    // console.log(originalData);
+                    firstLoad = false;
+                }
+
+                $('#agreement-length-id').trigger('change');
                 $('#internet-product-id').trigger('change');
                 $('#static-ip-product-id').trigger('change');
                 $('#tv-product-id').trigger('change');
-                $('#agreement-length-id').trigger('change');
+                
             });
         }
     });

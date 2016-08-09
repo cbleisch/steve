@@ -83,18 +83,22 @@ class InternetProductController extends Controller {
 	public function destroy($id)
 	{
 		InternetProduct::destroy($id);
-		return redirect()
-				->route('internet.index.get')
-				->with('products', InternetProduct::all())
-				->with('packages', ProductPackage::all());
+        return redirect()
+            ->route('internet.index.get')
+            ->with('products', InternetProduct::all())
+            ->with('packages', ProductPackage::all());
 	}
-	
-	public function getPrice($id, $packageID) {
-		if($id && $packageID) {
-			$product = InternetProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
-			return $product[0]->pivot->price;
-		} else {
-			return '0.00';
-		}
-	}
+
+    public function getPrice($id, $packageID) {
+        $data = [];
+        if($id && $packageID) {
+            $product = InternetProduct::find($id);
+            $productPackages = InternetProduct::find($id)->packages()->having('product_packages.id', '=', $packageID)->get();
+            $data['productPrice'] = $productPackages[0]->pivot->price;
+            $data['modemRentalPrice'] = $product->modem_rental_price;
+        } else {
+            $data['productPrice'] = $data['modemRentalPrice'] = '0.00';
+        }
+        return response()->json($data);
+    }
 }

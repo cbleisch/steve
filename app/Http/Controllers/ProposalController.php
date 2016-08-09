@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
-use App\Models\proposal;
+use App\Models\Proposal;
 use App\Models\ProductPackage;
 
 class proposalController extends Controller {
@@ -56,8 +56,8 @@ class proposalController extends Controller {
 		// $internetOptions = $request->input('internet_product_id');
 		// echo $internetOptions[$request->input('package_id')];
 		
-		var_dump($request->input());
-		die;
+		// var_dump($request->input());
+		// die;
 
 		if(empty($id)) {
 			$proposal = new Proposal;
@@ -68,11 +68,6 @@ class proposalController extends Controller {
 
 		$proposal->fill($request->input());
 		if($proposal->save()) {
-			$proposal->packages()->sync($request->input('packages'));
-    //         foreach ($request->input('packages') as $packageID) {
-    //             $pPackage = ProductPackage::find($packageID);
-    //             $proposal->packages()->save($pPackage, ['price' => $prices[$packageID]]);
-		 	// } 
 			flash()->success($proposal->name . ' was saved.');
 		} else {
 			flash()->danger($proposal->name . ' could not be saved.');

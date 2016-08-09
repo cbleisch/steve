@@ -9,7 +9,14 @@ class ProductPackage extends Model {
     public $timestamps = true;
     protected $table = 'product_packages';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['name', 'voice_lines_under_four_price', 'voice_lines_over_four_price', 'phone_activation_fee'];
+    protected $fillable = [
+        'name',
+        'voice_lines_under_four_price',
+        'voice_lines_over_four_price',
+        'phone_activation_fee',
+        'additional_tv_outlet_price',
+        'hd_tv_per_outlet_price'
+    ];
 
     public function internetProducts() {
         return $this->belongsToMany('App\Models\InternetProduct')->withPivot('price');

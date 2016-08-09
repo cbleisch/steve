@@ -67,13 +67,23 @@
                     </div>
                     @foreach($packages as $package)
                        <div class="form-group package-price" data-id="{{$package->id}}" style="display: none">
-                        <label for="">{{ $package->name }} Price</label>
-                        <input type="number" class="form-control" id="packagePrice[{{ $package->id }}]" name="packagePrice[{{ $package->id }}]" placeholder="0.00"
-                            value="@foreach($product->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->price : ''}}@endforeach"
-                            step=".01"
-                        >
+                            <label for="">{{ $package->name }} Price</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                <input type="number" class="form-control" id="packagePrice[{{ $package->id }}]" name="packagePrice[{{ $package->id }}]" placeholder="0.00"
+                                value="@foreach($product->packages as $pPackage){{ $pPackage->id == $package->id  ? $pPackage->pivot->price : ''}}@endforeach"
+                                step=".01"
+                                >
+                            </div>
                         </div> 
                     @endforeach
+                    <div class="form-group">
+                        <label for="modem_rental_price">Modem Rental Price</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                            <input type="number" class="form-control" name="modem_rental_price" id="modem-rental-price" min="0" step=".01" placeholder="0.00" value="{{ $product->modem_rental_price or '' }}" />
+                        </div>
+                    </div>
                     <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

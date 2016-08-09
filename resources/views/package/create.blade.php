@@ -66,6 +66,20 @@
                         <input type="number" class="form-control" id="phone-activation-fee" name="phone_activation_fee" placeholder="0.00" value="{{ $package->phone_activation_fee or '' }}" required step=".01">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="additional_tv_outlet_price">Price per Additional TV Outlet</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                        <input type="number" class="form-control" id="additional-tv-outlet-price" name="additional_tv_outlet_price" placeholder="0.00" value="{{ $package->additional_tv_outlet_price or '0.00' }}" required step=".01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="hd_tv_per_outlet_price">Price per Additional HD TV Outlet</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                        <input type="number" class="form-control" id="hd-tv-per-outlet-price" name="hd_tv_per_outlet_price" placeholder="0.00" value="{{ $package->hd_tv_per_outlet_price or '0.00' }}" required step=".01">
+                    </div>
+                </div>
                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

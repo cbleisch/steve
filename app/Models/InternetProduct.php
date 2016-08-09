@@ -9,7 +9,7 @@ class InternetProduct extends Model {
     public $timestamps = true;
 	protected $table = 'internet_products';
 	protected $dates = ['deleted_at'];
-	protected $fillable = ['name'];
+	protected $fillable = ['name', 'modem_rental_price'];
 
     public function packages() {
         return $this->belongsToMany('App\Models\ProductPackage')->withPivot('price');

@@ -15,6 +15,7 @@ class CreateInternetProductsTable extends Migration
         Schema::create('internet_products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();
+            $table->decimal('modem_rental_price', 5, 2);
             $table->timestamps();
             $table->softDeletes();
         });
