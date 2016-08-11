@@ -34,6 +34,15 @@ class CreateProposalsTable extends Migration
             $table->integer('tv_product_id');
             $table->decimal('tv_product_price', 5, 2);
             $table->decimal('tv_product_price_extended', 5, 2);
+
+            $table->integer('additional_tv_outlets_qty');
+            $table->decimal('additional_tv_outlets_price', 5, 2);
+            $table->decimal('additional_tv_outlets_price_extended', 5, 2);
+
+            $table->integer('additional_hd_outlets_qty');
+            $table->decimal('additional_hd_outlets_price', 5, 2);
+            $table->decimal('additional_hd_outlets_price_extended', 5, 2);
+            
             $table->decimal('standard_installation_fee_price', 5, 2);
             $table->decimal('standard_installation_fee_price_extended', 5, 2);
             $table->integer('phone_activation_qty');

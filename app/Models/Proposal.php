@@ -60,4 +60,8 @@ class Proposal extends Model {
     public function tvProduct() {
         return $this->belongsTo('App\Models\TvProduct');
     }
+
+    public function productPackage() {
+        return $this->belongsTo('App\Models\ProductPackage');
+    }
 }

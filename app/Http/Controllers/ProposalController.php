@@ -51,31 +51,39 @@ class proposalController extends Controller {
 				->with('packages', ProductPackage::all());
 	}
 
-	public function store(Request $request, $id = '')
+	public function store(Request $request, $id = '', $print = 0)
 	{
-		// $internetOptions = $request->input('internet_product_id');
-		// echo $internetOptions[$request->input('package_id')];
-		
-		// var_dump($request->input());
-		// die;
-
 		if(empty($id)) {
 			$proposal = new Proposal;
 		} else {
 			$proposal = Proposal::find($id);
 		}
+		$printing = '';
+		if(!empty($print)) {
+			$printing = ' for printing';
+		}
 
 
 		$proposal->fill($request->input());
+
+		if($proposal->voice_lines_under_four_qty < 3) {
+			$proposal->voice_lines_over_four_price_extended = '0.00';
+		}
+
 		if($proposal->save()) {
-			flash()->success($proposal->name . ' was saved.');
+			flash()->success("Proposal for $proposal->customer was saved$printing.");
 		} else {
 			flash()->danger($proposal->name . ' could not be saved.');
 		}
-
-		return redirect()
+		
+		if(!empty($print)) {
+			return view('proposals.print')
+				->with('proposal', Proposal::find($id));
+		} else {
+			return redirect()
 				->route('proposal.index.get')
 				->with('proposals', Proposal::all());
+		}
 	}
 
 	public function destroy($id)
@@ -86,5 +94,9 @@ class proposalController extends Controller {
 				->with('proposals', Proposal::all());	
 	}
 
-
+	public function printy($id)
+	{
+		return view('proposals.print')
+				->with('proposal', Proposal::find($id));
+	}
 }

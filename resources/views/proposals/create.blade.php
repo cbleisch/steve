@@ -48,7 +48,7 @@
 @section('content')
 <div class="block-flat">
             <div class="content" style="margin-top:-20px">
-                <form action="{{ URL::route('proposal.store', [$proposal->id]) }}" method="POST">
+                <form action="{{ URL::route('proposal.store', [$proposal->id]) }}" method="POST" id="proposal-form">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="customer">Customer Name</label>
@@ -131,6 +131,9 @@
                                         </dd>
                                     </dl>
                                     <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                                    @if($proposal->id)
+                                        <a class="btn btn-success" id="print-button"><i class="fa fa-print"></i> Print View</a>
+                                    @endif
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
@@ -220,7 +223,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="4-plus-row" style="display: none">
+                    <div class="row" id="4-plus-row" @if($proposal->voice_lines_under_four_qty < 3) style="display: none" @endif>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="agreement_length_id">4+ Lines</label>
@@ -406,6 +409,15 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#print-button').on('click', function(e) {
+            e.preventDefault();
+            var route = "{{ URL::route('proposal.store', [$proposal->id, 'print']) }}";
+            var form = $('#proposal-form');
+            $(form).attr('action', route);
+            $(form).attr('target', '_blank');
+            $(form).submit();
+        });
+
         var originalData = [];
         originalData['internet_product_id'] = {{ $proposal->internet_product_id or 0 }};
         originalData['agreement_length_id'] = '{{ $proposal->agreement_length_id or 0 }}';
@@ -502,6 +514,7 @@
             if(qty >= 3) {
                 $('#4-plus-row').show();
             } else {
+                $('#voice-lines-over-four-qty').val('0').trigger('change');
                 $('#4-plus-row').hide();
             }
             $('#phone-activation-qty').val(qty).trigger('change');
