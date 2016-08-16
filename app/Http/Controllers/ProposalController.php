@@ -77,7 +77,8 @@ class proposalController extends Controller {
 		}
 		
 		if(!empty($print)) {
-			return view('proposals.print')
+			return redirect()
+				->route('proposal.print.get', [$proposal->id])
 				->with('proposal', Proposal::find($id));
 		} else {
 			return redirect()
