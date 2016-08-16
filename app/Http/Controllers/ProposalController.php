@@ -65,7 +65,7 @@ class proposalController extends Controller {
 
 
 		$proposal->fill($request->input());
-
+		
 		if($proposal->voice_lines_under_four_qty < 3) {
 			$proposal->voice_lines_over_four_price_extended = '0.00';
 		}

@@ -247,7 +247,7 @@
                                 <label for="voice_lines_over_four_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="voice_lines_over_four_price_extended" id="voice-lines-over-four-price-extended" step=".01" readonly="" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="voice_lines_over_four_price_extended" id="voice-lines-over-four-price-extended" step=".01" readonly="" value="{{ $proposal->voice_lines_over_four_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -298,7 +298,7 @@
                                 <label for="additional_tv_outlets_price">Cost</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control text-right" name="additional_tv_outlets_price" id="voice-lines-under-four-price" readonly="" step=".01" value="{{ $proposal->additional_tv_outlets_price or '0.00' }}" />
+                                    <input type="number" class="form-control text-right" name="additional_tv_outlets_price" id="additional-tv-outlets-price" readonly="" step=".01" value="{{ $proposal->additional_tv_outlets_price or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -307,7 +307,7 @@
                                 <label for="additional_tv_outlets_price_extended">Extended</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="additional_tv_outlets_price_extended" id="additional-tv-outlets-price-extended" readonly="" step=".01" value="{{ $proposal->voice_lines_under_four_price_extended or '0.00' }}" />
+                                    <input type="number" class="form-control add-to-monthly-charges text-right" name="additional_tv_outlets_price_extended" id="additional-tv-outlets-price-extended" readonly="" step=".01" value="{{ $proposal->additional_tv_outlets_price_extended or '0.00' }}" />
                                 </div>
                             </div>
                         </div>
@@ -319,7 +319,7 @@
                                 <label for="additional_hd_outlets_qty">HD Service per Outlet</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                    <input type="number" class="form-control" name="_qty" id="additional-hd-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_hd_outlets_qty ? $proposal->additional_hd_outlets_qty : 0 }}">
+                                    <input type="number" class="form-control" name="additional_hd_outlets_qty" id="additional-hd-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_hd_outlets_qty ? $proposal->additional_hd_outlets_qty : 0 }}">
                                 </div>
                             </div>
                         </div>
@@ -434,7 +434,7 @@
                     sum += parseFloat($(this).val());
                 }
             });
-            $('#total-monthly-charges').val(sum);
+            $('#total-monthly-charges').val(parseFloat(sum).toFixed(2));
         }
 
         function calcOneTimeCharges() {
@@ -457,7 +457,7 @@
 
 
 
-        $('.length-select, .internet-select').select2()
+        $('.length-select, .internet-select').select2();
         $packageSelect = $("#product-package-id");
         $internetProductSelect = $('#internet-product-id');
         $staticIpProductSelect = $('#static-ip-product-id');
@@ -510,7 +510,7 @@
         $('[name="voice_lines_under_four_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#voice-lines-under-four-price').val();
-            $('#voice-lines-under-four-price-extended').val(price * qty).trigger('change');
+            $('#voice-lines-under-four-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
             if(qty >= 3) {
                 $('#4-plus-row').show();
             } else {
@@ -524,7 +524,7 @@
         $('[name="voice_lines_over_four_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#voice-lines-over-four-price').val();
-            $('#voice-lines-over-four-price-extended').val(price * qty).trigger('change');
+            $('#voice-lines-over-four-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
             
             var max = parseInt($('#phone-activation-qty').attr('max'));
             $('#phone-activation-qty').val(max).trigger('change');
@@ -533,13 +533,19 @@
         $('[name="phone_activation_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#phone-activation-price').val();
-            $('#phone-activation-price-extended').val(price * qty).trigger('change');
+            $('#phone-activation-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
         });
 
         $('[name="additional_tv_outlets_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#additional-tv-outlets-price').val();
-            $('#additional-tv-outlets-price-extended').val(price * qty).trigger('change');
+            $('#additional-tv-outlets-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
+        });
+
+        $('#additional-hd-outlets-qty').on('change', function(e) {
+            var qty = e.target.value;
+            var price = $('#additional-hd-outlets-price').val();
+            $('#additional-hd-outlets-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
         });
 
         function packageSelects(firstLoad) {
@@ -569,6 +575,8 @@
                 
                 $('#voice-lines-under-four-price').val(data.package.voice_lines_under_four_price);
                 $('#voice-lines-over-four-price').val(data.package.voice_lines_over_four_price);
+                $('#additional-tv-outlets-price').val(data.package.additional_tv_outlet_price);
+                $('#additional-hd-outlets-price').val(data.package.hd_tv_per_outlet_price);
 
 
                 $('#phone-activation-price').val(data.package.phone_activation_fee);
