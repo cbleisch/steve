@@ -67,6 +67,12 @@
     .block-flat .content {
         padding: 5px 3px 0 3px;
     }
+
+    .vcenter {
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+    }
 </style>
 @stop
 
@@ -76,12 +82,16 @@
 @stop
 
 @section('page-header')
+    
 <div class="row">
-    <div class="col-xs-3">
-        <img src="/images/comcast-business-class-logo.gif" width="300px" />
+    <div class="col-xs-3 vcenter">
+        <img src="/images/comcast-business-class-logo.gif" width="300px" class="hidden-print" />
+        <img src="/images/comcast-business-class-logo.gif" width="100px" class="visible-print-inline-block" />
     </div>
-    <div class="col-xs-8">
-        <h3>Service Proposal</h3>
+    <div class="col-xs-7 vcenter">
+        <h3 class="hidden-print">Print Service Proposal for {{ $proposal->customer }}</h3>
+    </div>
+    <div class="col-xs-1 vcenter">
         <button class="btn btn-success pull-right hidden-print" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
     </div>
 </div>
