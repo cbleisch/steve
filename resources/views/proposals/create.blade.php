@@ -27,11 +27,40 @@
         margin-top: initial;
         line-height: 16px;
     }
+
+    .input-group-addon {
+        background-color: #337ab7;
+        border: 1px solid #2d6ca2;
+    }
+    .input-group-addon > i {
+        color: #fff;
+    }
+
+    .ui-datepicker {
+        background-color: #fff;
+    }
+
+    .ui-datepicker .ui-datepicker-header {
+        background: #337ab7;
+        color: #fff;
+    }
+
+    .ui-datepicker > table {
+        background-color: rgba(51, 122, 183, 0.35);
+    }
+
+    .ui-datepicker table th span, .ui-datepicker td span, .ui-datepicker td a {
+        color: #000;
+    }
+
+    .ui-datepicker td a:hover {
+        background: #337ab7;
+    }
 </style>
 @stop
 
 @section('breadcrumbs')
-<li><a href="{{ URL::route('proposal.index.get') }}">Proposal Products</a></li>
+<li><a href="{{ URL::route('proposal.index.get') }}">Proposal</a></li>
 <li class="active">{{ $proposal->id ? 'Modify' : 'Create'  }}</li>
 @stop
 
@@ -50,25 +79,46 @@
             <div class="content" style="margin-top:-20px">
                 <form action="{{ URL::route('proposal.store', [$proposal->id]) }}" method="POST" id="proposal-form">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class="form-group">
-                        <label for="customer">Customer Name</label>
-                        <input type="text" class="form-control" id="customer" name="customer" placeholder="Customer Name" value="{{ $proposal->customer or '' }}" required autofocus>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="date">Proposal Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="string" class="form-control" id="date" name="date" value="" required>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="product_package_id">Product Packages</label>
-                        <select class="select2" style="width: 100%" name="product_package_id" id="product-package-id">
-                            @foreach($packages as $package)
-                                <option value="{{ $package->id }}" {{ $package->id == $proposal->product_package_id ? 'selected' : '' }}>{{ $package->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="customer">Customer Name</label>
+                                <input type="text" class="form-control" id="customer" name="customer" placeholder="Customer Name" value="{{ $proposal->customer or '' }}" required autofocus>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="agreement_length_id">Agreement Length</label>
-                        <select class="select2" name="agreement_length_id" id="agreement-length-id">
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="product_package_id">Product Packages</label>
+                                <select class="select2" style="width: 100%" name="product_package_id" id="product-package-id">
+                                    @foreach($packages as $package)
+                                        <option value="{{ $package->id }}" {{ $package->id == $proposal->product_package_id ? 'selected' : '' }}>{{ $package->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="agreement_length_id">Agreement Length</label>
+                                <select class="select2" name="agreement_length_id" id="agreement-length-id">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <h3>Internet</h3>
                     <div class="row">
                         <div class="col-sm-4">
@@ -289,7 +339,7 @@
                                 <label for="additional_tv_outlets_qty">Additional outlets (after 1<sup>st</sup>)</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                    <input type="number" class="form-control" name="additional_tv_outlets_qty" id="additional-tv-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_tv_outlets_qty ? $proposal->additional_tv_outlets_qty : 0 }}">
+                                    <input type="number" class="form-control" name="additional_tv_outlets_qty" id="additional-tv-outlets-qty" step="1" min="0" value="{{ $proposal->additional_tv_outlets_qty ? $proposal->additional_tv_outlets_qty : 0 }}">
                                 </div>
                             </div>
                         </div>
@@ -319,7 +369,7 @@
                                 <label for="additional_hd_outlets_qty">HD Service per Outlet</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                    <input type="number" class="form-control" name="additional_hd_outlets_qty" id="additional-hd-outlets-qty" max="4" step="1" min="0" value="{{ $proposal->additional_hd_outlets_qty ? $proposal->additional_hd_outlets_qty : 0 }}">
+                                    <input type="number" class="form-control" name="additional_hd_outlets_qty" id="additional-hd-outlets-qty" max="{{ $proposal->additional_tv_outlets_qty + 1 }}" step="1" min="0" value="{{ $proposal->additional_hd_outlets_qty ? $proposal->additional_hd_outlets_qty : 0 }}">
                                 </div>
                             </div>
                         </div>
@@ -417,6 +467,13 @@
             $(form).attr('target', '_blank');
             $(form).submit();
         });
+
+        $('#date').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'MM/DD/YYYY'
+            }
+        }).val("{{ Carbon\Carbon::parse($proposal->proposalDates->sortByDesc('created_at')->first()->date)->format('m/d/Y') }}");
 
         var originalData = [];
         originalData['internet_product_id'] = {{ $proposal->internet_product_id or 0 }};
@@ -539,7 +596,10 @@
         $('[name="additional_tv_outlets_qty"]').on('change', function(e) {
             var qty = e.target.value;
             var price = $('#additional-tv-outlets-price').val();
+            var maxHD = ++qty;
+            console.log(maxHD);
             $('#additional-tv-outlets-price-extended').val(parseFloat(price * qty).toFixed(2)).trigger('change');
+            $('#additional-hd-outlets-qty').attr('max', maxHD);
         });
 
         $('#additional-hd-outlets-qty').on('change', function(e) {

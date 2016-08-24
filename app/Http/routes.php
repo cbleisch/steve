@@ -23,8 +23,8 @@ Route::get('/home', function()
 });
 
 Route::controllers([
-	// 'auth' => 'Auth\AuthController',
-	// 'password' => 'Auth\PasswordController',
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
 ]);
 
 

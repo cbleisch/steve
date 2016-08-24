@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use App\Models\Proposal;
+use App\Models\ProposalDate;
 use App\Models\ProductPackage;
 
 class proposalController extends Controller {
@@ -42,7 +44,7 @@ class proposalController extends Controller {
 	public function create($id = '')
 	{
 		if(!empty($id)) {
-			$proposal = Proposal::find($id);
+			$proposal = Proposal::with('proposalDates')->find($id);
 		} else {
 			$proposal = new Proposal;
 		}
@@ -53,19 +55,28 @@ class proposalController extends Controller {
 
 	public function store(Request $request, $id = '', $print = 0)
 	{
+
 		if(empty($id)) {
 			$proposal = new Proposal;
 		} else {
 			$proposal = Proposal::find($id);
 		}
+		
 		$printing = '';
 		if(!empty($print)) {
 			$printing = ' for printing';
 		}
 
-
 		$proposal->fill($request->input());
+		$date = Carbon::parse($request->input('date'))->format('Y-m-d');
 		
+		if(count($proposal->proposalDates) == 0 || ( count($proposal->proposalDates) > 0 && $proposal->proposalDates->sortByDesc('created_at')->first()->date != $date) ) {
+			$proposalDate = new ProposalDate;
+			$proposalDate->date = $date;
+			$proposalDate->save();
+			$proposal->proposalDates()->attach($proposalDate);
+		}
+
 		if($proposal->voice_lines_under_four_qty < 3) {
 			$proposal->voice_lines_over_four_price_extended = '0.00';
 		}

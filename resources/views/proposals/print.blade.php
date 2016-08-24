@@ -351,6 +351,12 @@
                     <h4 style="margin-bottom: 3px; line-height: 25px;">{{ $proposal->total_one_time_charges }}</h4></h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 visible-print-inline-block">*Equipment charge to be included with any Internet or phone service.</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 visible-print-inline-block">Estimated pricing based on: {{ Carbon\Carbon::parse($proposal->proposalDates->sortByDesc('created_at')->first()->date)->format('m/d/Y') }} products and prices; subject to change from Comcast</div>
+            </div>
         </div>
     </div>
 @stop

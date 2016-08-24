@@ -64,4 +64,8 @@ class Proposal extends Model {
     public function productPackage() {
         return $this->belongsTo('App\Models\ProductPackage');
     }
+
+    public function proposalDates() {
+        return $this->belongsToMany('App\Models\ProposalDate');
+    }
 }

@@ -86,6 +86,7 @@
                         </td>
                         
                         <td class="text-center" style="width: 15%">
+                            <a href="{{ URL::route('proposal.print.get', [$proposal->id]) }}" class="btn btn-default" target="_blank"><i class="fa fa-print"></i></a>
                             <a href="{{ URL::route('proposal.create.get', [$proposal->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                             <form action="{{ URL::route('proposal.destroy.post', [$proposal->id]) }}" method="POST" class="form-inline">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
